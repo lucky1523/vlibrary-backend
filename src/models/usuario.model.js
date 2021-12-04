@@ -1,0 +1,59 @@
+const sql = require("./db.js");
+
+// constructor
+const Usuario = function(usuario) {
+  this.id_usuario = usuario.id_usuario;
+  this.nombre_usuario = usuario.nombre_usuario;
+  this.contraseña = usuario.contraseña; // Cambiar a password
+  this.correo = usuario.correo;
+  this.ultimo_inicio = usuario.ultimo_inicio;
+};
+
+Usuario.create = (newUsuario, result) => {
+  sql.query("INSERT INTO usuario SET ?", newUsuario, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    console.log("created user: ", { id: res.insertId, ...newUsuario });
+    result(null, { id: res.insertId, ...newUsuario });
+  });
+};
+
+// Usuario findOne
+Usuario.findOne = (login, result) => {
+  sql.query(
+    "SELECT * FROM usuario WHERE nombre_usuario = ? and contraseña = ?",
+    [login.nombre_usuario, login.contraseña],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      console.log("usuario: ", res[0]);
+      //update last_login
+      if(res[0]){ 
+        sql.query(
+          "UPDATE usuario SET ultimo_inicio = ? WHERE id_usuario = ?",
+          [new Date(),res[0].Id_usuario],
+          (err, resUpdate) => {
+            if (err) {
+              console.log("error: ", err);
+              result(err, null);
+              return;
+            }
+            // console.log("updated user: ", { id: id_usuario, ...login });
+            result(null, { id: res[0].Id_usuario, ...login });
+          }
+        );
+      }else {
+        result(null, "User not found");
+      }
+    }
+  );
+};
+
+module.exports = Usuario;
