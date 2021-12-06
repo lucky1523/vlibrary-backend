@@ -11,6 +11,10 @@ const Usuario = function(usuario) {
   this.updated = usuario.updated;
 };
 
+class validationError extends Error{
+  constructor (message){super(message) , this.name="validationError"};
+};
+
 Usuario.create = (newUsuario, result) => {
   sql.query("INSERT INTO usuario SET ?", newUsuario, (err, res) => {
     if (err) {
@@ -35,7 +39,7 @@ Usuario.findOne = (login, result) => {
         result(err, null);
         return;
       }
-      console.log("usuarios: ", res[0]);
+     
       //update last_login
       if(res[0]){ 
         sql.query(
@@ -47,13 +51,16 @@ Usuario.findOne = (login, result) => {
               result(err, null);
               return;
             }
+            console.log("usuarios: ", res[0]);
             // console.log("updated user: ", { id: id_usuario, ...login });
             result(null, { id: res[0].Id_usuario, ...login });
           }
         );
        
       }else {
-        result(null, "User not found");
+        
+        result( new validationError("Usuario incorrecto "), null);
+        return;
       }
     }
   );

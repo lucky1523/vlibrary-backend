@@ -44,11 +44,13 @@ exports.login = (req, res) => {
       nombre_usuario: req.body.nombre_usuario,
       password: req.body.password
     }, (err, data) => {
-      if (err)
-        res.status(500).send({
+      if (err){
+        res.status(401).send({
           message:
             err.message || "Some error occurred while retrieving Usuario."
         });
+      }
+        
       else res.send(data);
     }
     );

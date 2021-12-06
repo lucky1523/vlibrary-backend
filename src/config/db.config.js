@@ -1,7 +1,7 @@
 module.exports = {
     HOST: "localhost",
     USER: "root",
-    PASSWORD: "Iloveandrea2001",
+    PASSWORD: "root",
     DB: "vlibrary",
     PORT: 3306
   };

@@ -10,10 +10,7 @@ module.exports = app => {
     router.get("/findAll", books.findAll);
   
     // Retrieve a collection of books
-    router.post("/findSelection", books.findOne);
-  
-    // Update a Book with id
-    router.put("/:id", books.update);
+    router.post("/findSelection", books.findSome);
   
     // Delete a Book with id
     router.delete("/:id", books.delete);

@@ -44,8 +44,8 @@ exports.findAll = (req, res) => {
     });
   };
 
-// Find a single Tutorial with a id
-exports.findOne = (req, res) => {
+// Find a collection of books with a parameter of search
+exports.findSome = (req, res) => {
   // Validate request
   
   if (!req.body) {
@@ -71,17 +71,20 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a book identified by the id in the request
-exports.update = (req, res) => {
-  
-};
-
-// Delete a Tutorial with the specified id in the request
+// Delete a book with the specified id in the request
 exports.delete = (req, res) => {
-  
+  Libro.remove(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Tutorial with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete Tutorial with id " + req.params.id
+        });
+      }
+    } else res.send({ message: `Tutorial was deleted successfully!` });
+  });
 };
 
-// Delete all Tutorials from the database.
-exports.deleteAll = (req, res) => {
-  
-};
