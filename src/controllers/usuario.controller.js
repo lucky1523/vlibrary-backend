@@ -12,11 +12,11 @@ exports.create = (req, res) => {
     // Create a Usuario
     const usuario = new Usuario({
       nombre_usuario: req.body.nombre_usuario,
-      contraseña: req.body.contraseña,
+      password: req.body.password,
       correo : req.body.correo,
       ultimo_inicio : new Date(),
       created : new Date(),
-      updated : new Date(),
+      updated : new Date()
     });
   
     // Save Usuario in the database
@@ -42,7 +42,7 @@ exports.login = (req, res) => {
    // Verificar si el usuario existe
     Usuario.findOne({
       nombre_usuario: req.body.nombre_usuario,
-      contraseña: req.body.contraseña
+      password: req.body.password
     }, (err, data) => {
       if (err)
         res.status(500).send({

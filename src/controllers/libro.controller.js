@@ -1,4 +1,4 @@
-const Book = require("../models/libro.model.js");
+const Libro = require("../models/libro.model.js");
 
 // Create and Save a new Book
 exports.create = (req, res) => {
@@ -10,17 +10,19 @@ exports.create = (req, res) => {
     }
   
     // Create a Book
-    const book = new Book({
-      Titulo: req.body.titulo,
-      Autor: req.body.autor,
-      Sinopsis: req.body.sinopsis,
-      Foto_url: req.body.Foto_url,
-      Estado: req.body.state, 
-      Reservado:false,
+    const book = new Libro({
+      titulo: req.body.titulo,
+      autor: req.body.autor,
+      sinopsis: req.body.sinopsis,
+      foto_url: req.body.foto_url,
+      estado: req.body.state, 
+      reservado: false,
+      created : new Date(),
+      updated : new Date()
     });
   
     // Save Book in the database
-    Book.create(book, (err, data) => {
+    Libro.create(book, (err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -30,9 +32,9 @@ exports.create = (req, res) => {
     });
   };
 
-// Retrieve all Tutorials from the database (with condition).
+// Retrieve all books from the database 
 exports.findAll = (req, res) => {
-    Book.getAll((err, data) => {
+    Libro.getAll((err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -44,15 +46,32 @@ exports.findAll = (req, res) => {
 
 // Find a single Tutorial with a id
 exports.findOne = (req, res) => {
+  // Validate request
   
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  const consult = new Libro({
+    titulo:req.body.titulo,
+    autor:req.body.autor
+  });
+ 
+  
+  Libro.findSome(consult, (err,data)=>{
+    if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while looking for Author or Title."
+        });
+      else res.send(data);
+      
+    });
 };
 
-// find all published Tutorials
-exports.findAllPublished = (req, res) => {
-  
-};
-
-// Update a Tutorial identified by the id in the request
+// Update a book identified by the id in the request
 exports.update = (req, res) => {
   
 };

@@ -4,9 +4,11 @@ const sql = require("./db.js");
 const Usuario = function(usuario) {
   this.id_usuario = usuario.id_usuario;
   this.nombre_usuario = usuario.nombre_usuario;
-  this.contraseña = usuario.contraseña; // Cambiar a password
+  this.password = usuario.password; // Cambiar a password
   this.correo = usuario.correo;
   this.ultimo_inicio = usuario.ultimo_inicio;
+  this.created = usuario.created;
+  this.updated = usuario.updated;
 };
 
 Usuario.create = (newUsuario, result) => {
@@ -25,15 +27,15 @@ Usuario.create = (newUsuario, result) => {
 // Usuario findOne
 Usuario.findOne = (login, result) => {
   sql.query(
-    "SELECT * FROM usuario WHERE nombre_usuario = ? and contraseña = ?",
-    [login.nombre_usuario, login.contraseña],
+    "SELECT * FROM usuario WHERE nombre_usuario = ? and password = ?",
+    [login.nombre_usuario, login.password],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
         return;
       }
-      console.log("usuario: ", res[0]);
+      console.log("usuarios: ", res[0]);
       //update last_login
       if(res[0]){ 
         sql.query(
@@ -49,6 +51,7 @@ Usuario.findOne = (login, result) => {
             result(null, { id: res[0].Id_usuario, ...login });
           }
         );
+       
       }else {
         result(null, "User not found");
       }

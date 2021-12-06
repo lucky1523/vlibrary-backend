@@ -2,9 +2,16 @@ const sql = require("./db.js");
 
 // constructor
 const Libro = function(libro) {
-  this.title = tutorial.title;
-  this.description = tutorial.description;
-  this.published = tutorial.published;
+  this.id_libro=libro.id_libro;
+  this.titulo = libro.titulo;
+  this.autor = libro.autor;
+  this.foto_url=libro.foto_url;
+  this.sinopsis=libro.sinopsis;
+  this.estado=libro.estado;
+  this.reservado=libro.reservado
+  this.created=libro.created;
+  this.updated=libro.updated;
+
 };
 
 Libro.create = (newLibro, result) => {
@@ -20,22 +27,16 @@ Libro.create = (newLibro, result) => {
   });
 };
 
-Libro.findById = (id, result) => {
-  sql.query(`SELECT * FROM tutorials WHERE id = ${id}`, (err, res) => {
+Libro.findSome = (findSelection, result) => {
+  sql.query("SELECT * FROM libro WHERE titulo LIKE '%"+findSelection.titulo+"%' OR autor LIKE '%"+findSelection.autor+"%'",
+  (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
-
-    if (res.length) {
-      console.log("found tutorial: ", res[0]);
-      result(null, res[0]);
-      return;
-    }
-
-    // not found Tutorial with the id
-    result({ kind: "not_found" }, null);
+    console.log("error: ",res);
+    result(null,res)
   });
 };
 
