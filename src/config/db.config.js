@@ -3,5 +3,5 @@ module.exports = {
     USER: "root",
     PASSWORD: "root",
     DB: "vlibrary",
-    PORT: 3306
+    PORT: 3000
   };

@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const docs = require('./docs'); // llamando al index de docs que sirve para importar todo el swagger
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -14,6 +16,9 @@ app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+
+// Add swagger documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(docs));
 
 // simple route
 app.get("/", (req, res) => {
